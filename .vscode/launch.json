@@ -1,0 +1,24 @@
+{
+    "configurations": [
+        {
+            "type": "swift",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:SwiftMapReduce}",
+            "name": "Debug SwiftMapReduce",
+            "target": "SwiftMapReduce",
+            "configuration": "debug",
+            "preLaunchTask": "swift: Build Debug SwiftMapReduce"
+        },
+        {
+            "type": "swift",
+            "request": "launch",
+            "args": [],
+            "cwd": "${workspaceFolder:SwiftMapReduce}",
+            "name": "Release SwiftMapReduce",
+            "target": "SwiftMapReduce",
+            "configuration": "release",
+            "preLaunchTask": "swift: Build Release SwiftMapReduce"
+        }
+    ]
+}
