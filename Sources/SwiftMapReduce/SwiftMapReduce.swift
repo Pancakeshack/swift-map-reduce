@@ -3,12 +3,12 @@ import Foundation
 @available(macOS 12.0, *)
 @main
 enum SwiftMapReduce {
-    static let mappersCount = 6
-    static let reducersCount = 3
+    static let mappersCount = 20
+    static let reducersCount = 10
     static let input = "input.txt"
 
     static func main() async {
-        let startTime = Date()
+        let startTime: Date = Date()
 
         let streams: [AsyncValueStore<(String, Int)>] = (0..<Self.reducersCount).map { _ in
             AsyncValueStore<(String, Int)>()
@@ -22,11 +22,22 @@ enum SwiftMapReduce {
 
             print("Starting map reduce")
             try await withThrowingTaskGroup(of: Void.self) { group in
-                for chunk in chunkFiles {
-                    group.addTask {
-                        let mapper = try Mapper(
-                            reducers: streams, chunkFile: chunk, )
-                        try await mapper.map()
+                group.addTask {
+                    try await withThrowingTaskGroup(of: Void.self) { mapGroup in
+                        for chunk in chunkFiles {
+                            mapGroup.addTask {
+                                let mapper = try Mapper(
+                                    reducers: streams, chunkFile: chunk, )
+                                try await mapper.map()
+                            }
+                        }
+
+                        try await mapGroup.waitForAll()
+
+                        // Mapping is done, finish continuations
+                        for store in streams {
+                            await store.finish()
+                        }
                     }
                 }
 

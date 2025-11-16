@@ -44,7 +44,7 @@ actor Mapper {
             }
         }
 
-        await finishReducers()
+        await emptyReducers()
     }
 
     func refreshReducers(reducers: [Reducer]) {
@@ -56,10 +56,7 @@ actor Mapper {
         return reducers[index]
     }
 
-    private func finishReducers() async {
-        for reducer in reducers {
-            await reducer.finish()
-        }
+    private func emptyReducers() async {
         reducers = []
     }
 }

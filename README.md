@@ -31,12 +31,12 @@ The core logic is as follows:
 
 ### Chunking
 
-The program takes in the input file into 6 chunks. This is to simulate the chunking behavior of GFS, while keeping it all on one machine. They are stored in temporary files and returned from the chunker call.
+The program takes in the input file into 20 chunks. This is to simulate the chunking behavior of GFS, while keeping it all on one machine. They are stored in temporary files and returned from the chunker call. The file is read line by line and kept in a buffer that is flushed to disk once it reaches 25 MB.
 
 ### Mapping
 
-The program creates 6 total mappers (equal to the number of chunks) and 3 total reducers. Generally in most Map Reduce implementations you'll have more mappers than you do reducers, since the mapping logic is generally more time consuming as it has to read through the files and I/O is expensive. When the mappers are created they are passed in an array of `AsyncStream`, one for each reducer, and a `URL` for the chunk they are processing. They then stream the chunk line by line and split the words into key value pairs of `(Word, 1)`. A hashing function is used to determine the reducer to send to so ensure reducers process the same words across all mappers, in pseudocode `hash(key) % reducers.count`.
+The program creates 20 total mappers (equal to the number of chunks) and 10 total reducers. Generally in most Map Reduce implementations you'll have more mappers than you do reducers, since the mapping logic is generally more time consuming as it has to read through the files and I/O is expensive. When the mappers are created they are passed in an array of `AsyncStream`, one for each reducer, and a `URL` for the chunk they are processing. They then stream the chunk line by line and split the words into key value pairs of `(Word, 1)`. A hashing function is used to determine the reducer to send to so ensure reducers process the same words across all mappers, in pseudocode `hash(key) % reducers.count`.
 
 ### Reducing
 
-The 3 reducers are passed in a single `AsyncStream` each. They create their embedded db, cachce, and get to work processing values sent from the mappers. They fill up a cache until a threshold of values have been processed and then flush it to the embedded db. Once the stream is cancelled the reducer assumes the map logic is done and they being processing the output files by reading from the db. A `reducer_number.r` text file is generated under the `Output` directory for each reducer, including their counts.
+The 10 reducers are passed in a single `AsyncStream` each. They create their embedded db, cachce, and get to work processing values sent from the mappers. They fill up a cache until a threshold of values have been processed and then flush it to the embedded db. Once the stream is cancelled the reducer assumes the map logic is done and they being processing the output files by reading from the db. A `reducer_number.r` text file is generated under the `Output` directory for each reducer, including their counts.

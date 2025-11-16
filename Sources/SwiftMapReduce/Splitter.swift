@@ -2,7 +2,7 @@ import Foundation
 
 struct Splitter {
     let fileManager: FileManager = .default
-    let bufferSize: Int = 1024 * 1024  // 1 MB
+    let bufferSize: Int = 1024 * 1024 * 25  // 25MB
 
     @available(macOS 12.0, *)
     func split(filePath: String, numberOfSplits: Int = 4) async throws -> [URL] {
@@ -41,7 +41,7 @@ struct Splitter {
                 throw "Error converting line to chunk"
             }
             buffer.append(line)
-            if buffer.count == bufferSize || UInt64(buffer.count) + bytesInCurrentPart >= chunkSize
+            if buffer.count >= bufferSize || UInt64(buffer.count) + bytesInCurrentPart >= chunkSize
             {
                 curHandler.write(buffer)
                 bytesInCurrentPart += UInt64(buffer.count)

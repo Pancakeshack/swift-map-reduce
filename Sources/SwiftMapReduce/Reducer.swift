@@ -17,7 +17,7 @@ actor Reducer {
     init(
         reducerNumber: Int,
         stream: MapStream,
-        flushThreshold: Int = 10_000,
+        flushThreshold: Int = 100_000,
         fileManager: FileManager = .default
     ) throws {
         let dbGenerator = DbGenerator(fileManager: fileManager)
