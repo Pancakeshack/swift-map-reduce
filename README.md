@@ -18,9 +18,9 @@ You can find some information on installing swift here if you don't already have
 
 ## Brief Description
 
-To simulate the GFS file chunking and distributed mapping and reducing logic discussed in the paper, I decided to heavily utilize Swift concurrency to parallelize across multiple threads. 
+To simulate the GFS file chunking, distributed mapping and reducing logic discussed in the paper, I decided to heavily utilize Swift concurrency to parallelize across multiple threads. 
 
-I prioritized scalability to match as closely to the file as possible. I made these considerations during development:
+I prioritized scalability to match as closely to the paper as possible. I made these considerations during development:
 
 - Files are streamed line by line and not kept in memory. A 1mb buffer is filled and flushed periodically the the chunk files during splits.
 - The map logic streams from the file line by line, and passes the mapped values through an `AsyncStream`.
