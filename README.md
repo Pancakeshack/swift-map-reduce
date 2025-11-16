@@ -1,8 +1,9 @@
 # Swift Map Reduce Example
 
-This project is an example of map reduce, based on the 2003 Google white paper
+This project is an example of map reduce, based on the 2003 Google white paper for the monthly Heatsync Labs White Paper Book Club
 
-https://static.googleusercontent.com/media/research.google.com/en//archive/mapreduce-osdi04.pdf
+Paper: https://static.googleusercontent.com/media/research.google.com/en//archive/mapreduce-osdi04.pdf
+Heatsync Labs: https://www.heatsynclabs.org
 
 It aims to implement the core logic discussed in the paper on a smaller scale, using the word count processing example.
 
